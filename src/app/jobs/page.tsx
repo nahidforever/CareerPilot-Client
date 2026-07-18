@@ -130,7 +130,6 @@ async function getJobs(filters: PublicJobFilters): Promise<PublicJobsResponse> {
 
   const response = await fetch(`${serverUri}/jobs?${query.toString()}`, {
     method: "GET",
-    cache: "no-store",
   });
 
   const result = (await response.json()) as PublicJobsResponse;
