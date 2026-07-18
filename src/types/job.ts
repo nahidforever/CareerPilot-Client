@@ -51,3 +51,14 @@ export interface PublicJobsResponse {
   data: Job[];
   pagination: JobsPagination;
 }
+
+export interface JobDetailsData {
+  job: Job;
+  relatedJobs: Job[];
+}
+
+export interface JobDetailsResponse {
+  success: boolean;
+  message: string;
+  data: JobDetailsData;
+}

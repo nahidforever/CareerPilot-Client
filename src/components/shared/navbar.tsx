@@ -58,6 +58,14 @@ const privateRoutes = [
     label: "AI Assistant",
     href: "/ai-assistant",
   },
+  {
+    label: "About",
+    href: "/about",
+  },
+  {
+    label: "Contact",
+    href: "/contact",
+  },
 ];
 
 const hiddenNavbarRoutes = ["/login", "/register", "/forgot-password"];

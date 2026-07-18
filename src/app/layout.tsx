@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import Navbar from "@/components/shared/navbar";
 import "./globals.css";
+import Footer from "@/components/shared/Footer";
 
 export const metadata: Metadata = {
   title: {
@@ -24,12 +25,9 @@ export default function RootLayout({
 
         {children}
 
-        <Toaster
-          position="top-right"
-          richColors
-          theme="dark"
-          closeButton
-        />
+        <Footer />
+
+        <Toaster position="top-right" richColors theme="dark" closeButton />
       </body>
     </html>
   );
