@@ -11,7 +11,6 @@ import {
   LogIn,
   LogOut,
   Menu,
-  Settings,
   UserPlus,
   X,
 } from "lucide-react";
@@ -325,15 +324,6 @@ export default function Navbar() {
                         <CircleUserRound className="h-4 w-4" />
                         My Profile
                       </Link>
-
-                      <Link
-                        href="/settings"
-                        onClick={() => setIsProfileOpen(false)}
-                        className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-300 transition hover:bg-white/[0.06] hover:text-white"
-                      >
-                        <Settings className="h-4 w-4" />
-                        Settings
-                      </Link>
                     </div>
 
                     <div className="border-t border-white/10 pt-2">
@@ -481,15 +471,6 @@ export default function Navbar() {
                       >
                         <CircleUserRound className="h-4 w-4" />
                         My Profile
-                      </Link>
-
-                      <Link
-                        href="/settings"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex min-h-12 items-center gap-3 rounded-xl px-4 text-sm font-medium text-slate-300 transition hover:bg-white/[0.05] hover:text-white"
-                      >
-                        <Settings className="h-4 w-4" />
-                        Settings
                       </Link>
                     </div>
                   </div>
