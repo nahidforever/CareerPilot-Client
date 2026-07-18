@@ -95,7 +95,17 @@ export default function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
 
+  const [isMounted, setIsMounted] = useState(false);
+
   const profileMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const shouldHideNavbar = hiddenNavbarRoutes.some(
     (route) => pathname === route || pathname.startsWith(`${route}/`),
@@ -192,6 +202,25 @@ export default function Navbar() {
     return null;
   }
 
+  if (!isMounted) {
+    return (
+      <header className="sticky top-0 z-50 h-[72px] w-full border-b border-white/10 bg-[#08111f]/95">
+        <div className="mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-10">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 animate-pulse rounded-xl bg-white/[0.06]" />
+
+            <div className="space-y-2">
+              <div className="h-4 w-28 animate-pulse rounded bg-white/[0.06]" />
+              <div className="h-2 w-20 animate-pulse rounded bg-white/[0.04]" />
+            </div>
+          </div>
+
+          <div className="h-10 w-28 animate-pulse rounded-xl bg-white/[0.06]" />
+        </div>
+      </header>
+    );
+  }
+
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#08111f]/95 text-white shadow-[0_10px_30px_rgba(0,0,0,0.16)] backdrop-blur-xl">
@@ -199,7 +228,6 @@ export default function Navbar() {
           aria-label="Main navigation"
           className="mx-auto flex h-[72px] w-full max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-10"
         >
-          {/* Logo */}
           {/* Logo */}
           <Link
             href="/"

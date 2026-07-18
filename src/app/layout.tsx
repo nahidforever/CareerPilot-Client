@@ -3,6 +3,7 @@ import { Toaster } from "sonner";
 import Navbar from "@/components/shared/navbar";
 import "./globals.css";
 import Footer from "@/components/shared/Footer";
+import FloatingAIButton from "@/components/ai/FloatingAIButton";
 
 export const metadata: Metadata = {
   title: {
@@ -24,7 +25,8 @@ export default function RootLayout({
         <Navbar />
 
         {children}
-
+        
+        <FloatingAIButton />
         <Footer />
 
         <Toaster position="top-right" richColors theme="dark" closeButton />
