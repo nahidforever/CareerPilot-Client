@@ -159,28 +159,26 @@ export default function AddJobPage() {
         </button>
 
         {/* Heading */}
-        <div className="mb-9 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-          <div>
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-500/10 px-3.5 py-2 text-sm font-medium text-blue-300">
-              <BriefcaseBusiness className="h-4 w-4" />
-              Publish an opportunity
-            </div>
-
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-              Add a new job here
-            </h1>
-
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400 sm:text-base">
-              Provide complete and accurate information to help candidates
-              understand the role and evaluate the opportunity.
-            </p>
+        <section className="mx-auto mb-10 flex max-w-3xl flex-col items-center text-center sm:mb-12">
+          <div className="inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-500/10 px-3.5 py-2 text-xs font-medium text-blue-300 sm:text-sm">
+            <BriefcaseBusiness className="h-4 w-4" />
+            Publish an opportunity
           </div>
 
-          <div className="flex items-center gap-2 rounded-xl border border-teal-400/15 bg-teal-400/[0.07] px-4 py-3 text-sm text-teal-300">
-            <CheckCircle2 className="h-4 w-4" />
-            Your listing will be publicly visible
+          <h1 className="mt-5 text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">
+            Add a new job
+          </h1>
+
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
+            Provide complete and accurate information to help candidates
+            understand the role and evaluate the opportunity.
+          </p>
+
+          <div className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-teal-400/15 bg-teal-400/[0.07] px-4 py-3 text-sm text-teal-300 sm:w-auto">
+            <CheckCircle2 className="h-4 w-4 shrink-0" />
+            <span>Your listing will be publicly visible</span>
           </div>
-        </div>
+        </section>
 
         <form onSubmit={handleSubmit}>
           <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
