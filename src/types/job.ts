@@ -15,9 +15,39 @@ export interface Job {
   applicationDeadline: string;
   skills: string[];
   createdBy: string;
-  views: number;
-  rating: number;
-  reviewCount: number;
   createdAt: string;
   updatedAt: string;
+}
+export type JobSortOption =
+  | "newest"
+  | "oldest"
+  | "salary-low"
+  | "salary-high"
+  | "deadline";
+  
+export interface PublicJobFilters {
+  search: string;
+  category: string;
+  location: string;
+  jobType: string;
+  minSalary: string;
+  maxSalary: string;
+  sort: JobSortOption;
+  page: number;
+}
+
+export interface JobsPagination {
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  itemsPerPage: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+export interface PublicJobsResponse {
+  success: boolean;
+  message: string;
+  data: Job[];
+  pagination: JobsPagination;
 }
