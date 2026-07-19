@@ -92,8 +92,7 @@ export default function LoginPage() {
 
       toast.success("Demo login successful!");
 
-      router.push("/");
-      router.refresh();
+      window.location.replace("/");
     } catch {
       toast.error("Something went wrong during demo login.");
     } finally {
@@ -132,8 +131,7 @@ export default function LoginPage() {
 
       toast.success("Signed in successfully!");
 
-      router.push("/");
-      router.refresh();
+      window.location.replace("/");
     } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {

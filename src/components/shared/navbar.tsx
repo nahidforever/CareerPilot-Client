@@ -69,6 +69,18 @@ const privateRoutes = [
 
 const hiddenNavbarRoutes = ["/login", "/register", "/forgot-password"];
 
+const protectedNavbarRoutes = [
+  "/jobs/add",
+  "/jobs/manage",
+  "/ai-assistant",
+  "/dashboard",
+  "/profile",
+];
+
+function isProtectedNavbarRoute(href: string) {
+  return protectedNavbarRoutes.includes(href);
+}
+
 function getInitials(name?: string | null) {
   if (!name) {
     return "U";
@@ -258,6 +270,9 @@ export default function Navbar() {
                 <Link
                   key={route.href}
                   href={route.href}
+                  prefetch={
+                    isProtectedNavbarRoute(route.href) ? false : undefined
+                  }
                   className={`relative rounded-lg px-3.5 py-2 text-sm font-medium transition ${
                     active
                       ? "bg-blue-500/10 text-blue-300"
@@ -337,6 +352,7 @@ export default function Navbar() {
                     <div className="py-2">
                       <Link
                         href="/dashboard"
+                        prefetch={false}
                         onClick={() => setIsProfileOpen(false)}
                         className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-300 transition hover:bg-white/[0.06] hover:text-white"
                       >
@@ -346,6 +362,7 @@ export default function Navbar() {
 
                       <Link
                         href="/profile"
+                        prefetch={false}
                         onClick={() => setIsProfileOpen(false)}
                         className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-300 transition hover:bg-white/[0.06] hover:text-white"
                       >
@@ -462,6 +479,9 @@ export default function Navbar() {
                       <Link
                         key={route.href}
                         href={route.href}
+                        prefetch={
+                          isProtectedNavbarRoute(route.href) ? false : undefined
+                        }
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={`flex min-h-12 items-center rounded-xl px-4 text-sm font-medium transition ${
                           active
@@ -485,6 +505,7 @@ export default function Navbar() {
                     <div className="space-y-2">
                       <Link
                         href="/dashboard"
+                        prefetch={false}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className="flex min-h-12 items-center gap-3 rounded-xl px-4 text-sm font-medium text-slate-300 transition hover:bg-white/[0.05] hover:text-white"
                       >
@@ -494,6 +515,7 @@ export default function Navbar() {
 
                       <Link
                         href="/profile"
+                        prefetch={false}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className="flex min-h-12 items-center gap-3 rounded-xl px-4 text-sm font-medium text-slate-300 transition hover:bg-white/[0.05] hover:text-white"
                       >

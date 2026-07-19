@@ -93,8 +93,7 @@ export default function RegisterPage() {
       toast.success("Account created successfully!");
 
       form.reset();
-      router.push("/");
-      router.refresh();
+      window.location.replace("/");
     } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
