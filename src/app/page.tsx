@@ -29,6 +29,9 @@ import HeroSection from "@/components/home/HeroSection";
 import JobCard from "@/components/jobs/JobCard";
 import type { Job, PublicJobsResponse } from "@/types/job";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 interface HomeJobsData {
   jobs: Job[];
   totalJobs: number;
@@ -148,21 +151,30 @@ async function getHomeJobs(): Promise<HomeJobsData> {
   const serverUri = process.env.NEXT_PUBLIC_SERVER_URI;
 
   if (!serverUri) {
+    console.error("NEXT_PUBLIC_SERVER_URI is missing.");
+
     return {
       jobs: [],
       totalJobs: 0,
     };
   }
 
+  const normalizedServerUri = serverUri.replace(/\/$/, "");
+
   try {
     const response = await fetch(
-      `${serverUri}/jobs?sort=newest&page=1&limit=4`,
+      `${normalizedServerUri}/jobs?sort=newest&page=1&limit=4`,
       {
         method: "GET",
+        cache: "no-store",
       },
     );
 
     if (!response.ok) {
+      const responseText = await response.text();
+
+      console.error("Home jobs request failed:", response.status, responseText);
+
       return {
         jobs: [],
         totalJobs: 0,
@@ -173,6 +185,7 @@ async function getHomeJobs(): Promise<HomeJobsData> {
 
     return {
       jobs: Array.isArray(result.data) ? result.data : [],
+
       totalJobs: result.pagination?.totalItems ?? 0,
     };
   } catch (error) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -12,6 +12,7 @@ import {
   LoaderCircle,
   LockKeyhole,
   Mail,
+  UserRoundCheck,
 } from "lucide-react";
 import AuthShowcase from "@/components/auth/auth-showcase";
 import { authClient } from "@/lib/auth-client";
@@ -47,6 +48,58 @@ export default function LoginPage() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [isPending, setIsPending] = useState(false);
+
+  const [isDemoPending, setIsDemoPending] = useState(false);
+
+  const isAnyPending = isPending || isDemoPending;
+
+  const emailInputRef = useRef<HTMLInputElement>(null);
+
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+
+  const demoEmail = process.env.NEXT_PUBLIC_DEMO_EMAIL || "";
+
+  const demoPassword = process.env.NEXT_PUBLIC_DEMO_PASSWORD || "";
+
+  const handleDemoLogin = async () => {
+    if (!demoEmail || !demoPassword) {
+      toast.error("Demo credentials are not configured.");
+      return;
+    }
+
+    if (emailInputRef.current) {
+      emailInputRef.current.value = demoEmail;
+    }
+
+    if (passwordInputRef.current) {
+      passwordInputRef.current.value = demoPassword;
+    }
+
+    setIsDemoPending(true);
+
+    try {
+      const { error } = await authClient.signIn.email({
+        email: demoEmail,
+        password: demoPassword,
+      });
+
+      if (error) {
+        toast.error(
+          error.message || "Unable to sign in with the demo account.",
+        );
+        return;
+      }
+
+      toast.success("Demo login successful!");
+
+      router.push("/");
+      router.refresh();
+    } catch {
+      toast.error("Something went wrong during demo login.");
+    } finally {
+      setIsDemoPending(false);
+    }
+  };
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -88,8 +141,10 @@ export default function LoginPage() {
     }
   };
 
-  const handleGoogleButton = () => {
-    toast.info("Google authentication will be available soon.");
+  const handleGoogleSignIn = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+    });
   };
 
   return (
@@ -142,12 +197,13 @@ export default function LoginPage() {
                 <Mail className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-500" />
 
                 <input
+                  ref={emailInputRef}
                   id="email"
                   name="email"
                   type="email"
                   autoComplete="email"
                   required
-                  disabled={isPending}
+                  disabled={isAnyPending}
                   placeholder="you@example.com"
                   className="h-12 w-full rounded-xl border border-white/10 bg-[#111d2d] pl-12 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 disabled:cursor-not-allowed disabled:opacity-60"
                 />
@@ -176,12 +232,13 @@ export default function LoginPage() {
                 <LockKeyhole className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-500" />
 
                 <input
+                  ref={passwordInputRef}
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   required
-                  disabled={isPending}
+                  disabled={isAnyPending}
                   placeholder="Enter your password"
                   className="h-12 w-full rounded-xl border border-white/10 bg-[#111d2d] pl-12 pr-12 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 disabled:cursor-not-allowed disabled:opacity-60"
                 />
@@ -189,7 +246,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((current) => !current)}
-                  disabled={isPending}
+                  disabled={isAnyPending}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-300 disabled:cursor-not-allowed"
                 >
@@ -202,10 +259,29 @@ export default function LoginPage() {
               </div>
             </div>
 
+            <button
+              type="button"
+              onClick={() => void handleDemoLogin()}
+              disabled={isAnyPending}
+              className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-blue-400/25 bg-blue-500/10 px-4 text-sm font-semibold text-blue-300 transition hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-blue-200 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isDemoPending ? (
+                <>
+                  <LoaderCircle className="h-4 w-4 animate-spin" />
+                  Demo signing in...
+                </>
+              ) : (
+                <>
+                  <UserRoundCheck className="h-4 w-4" />
+                  Demo Login
+                </>
+              )}
+            </button>
+
             {/* Submit button */}
             <button
               type="submit"
-              disabled={isPending}
+              disabled={isAnyPending}
               className="group flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0b1422] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isPending ? (
@@ -236,8 +312,8 @@ export default function LoginPage() {
           {/* Google button: UI only */}
           <button
             type="button"
-            onClick={handleGoogleButton}
-            disabled={isPending}
+            onClick={handleGoogleSignIn}
+            disabled={isAnyPending}
             className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/[0.055] px-4 text-sm font-semibold text-slate-100 transition hover:border-white/20 hover:bg-white/[0.09] focus:outline-none focus:ring-2 focus:ring-blue-500/60 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <GoogleIcon />

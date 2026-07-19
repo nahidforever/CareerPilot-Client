@@ -102,8 +102,10 @@ export default function RegisterPage() {
     }
   };
 
-  const handleGoogleButton = () => {
-    toast.info("Google authentication will be available soon.");
+  const handleGoogleSignIn = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+    });
   };
 
   return (
@@ -296,7 +298,7 @@ export default function RegisterPage() {
           {/* Google button: UI only for now */}
           <button
             type="button"
-            onClick={handleGoogleButton}
+            onClick={handleGoogleSignIn}
             disabled={isPending}
             className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/[0.055] px-4 text-sm font-semibold text-slate-100 transition hover:border-white/20 hover:bg-white/[0.09] focus:outline-none focus:ring-2 focus:ring-blue-500/60 disabled:cursor-not-allowed disabled:opacity-60"
           >
